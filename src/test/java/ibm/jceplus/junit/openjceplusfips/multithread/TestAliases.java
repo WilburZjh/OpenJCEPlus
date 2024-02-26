@@ -570,4 +570,3 @@ public class TestAliases extends BaseTest {
         return suite;
     }
 }
-
