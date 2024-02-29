@@ -144,7 +144,7 @@ public class TestMultithreadFIPS extends TestCase {
     }
 
     public static Test suite() {
-        TestSuite suite = new TestSuite(TestMultithread.class);
+        TestSuite suite = new TestSuite(TestMultithreadFIPS.class);
         return suite;
     }
 

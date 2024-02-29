@@ -12,6 +12,7 @@ import java.security.InvalidParameterException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.DSAPrivateKey;
@@ -171,7 +172,17 @@ public class BaseTestDSASignatureInterop extends BaseTestSignatureInterop {
     //
     //
     protected KeyPair generateKeyPair(int keysize) throws Exception {
-        KeyPairGenerator dsaKeyPairGen = KeyPairGenerator.getInstance("DSA", providerName);
+        KeyPairGenerator dsaKeyPairGen = null;
+        try {
+            dsaKeyPairGen = KeyPairGenerator.getInstance("DSA", providerName);
+        } catch (NoSuchAlgorithmException nsae) {
+            if (providerName.equals("OpenJCEPlusFIPS")) {
+                assertEquals("no such algorithm: DSA for provider OpenJCEPlusFIPS", nsae.getMessage());
+                return null;
+            } else {
+                throw nsae;
+            }
+        }
         dsaKeyPairGen.initialize(keysize);
         return dsaKeyPairGen.generateKeyPair();
     }
